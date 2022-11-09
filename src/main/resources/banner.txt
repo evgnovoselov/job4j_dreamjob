@@ -1,0 +1,12 @@
+
+       __      __    __ __  _
+      / /___  / /_  / // / (_)
+ __  / / __ \/ __ \/ // /_/ /
+/ /_/ / /_/ / /_/ /__  __/ /
+\____/\____/_.___/  /_/_/ /
+                     /___/
+
+Job4j Dream Job
+Developed by Evgeny Novoselov
+
+:: Built with Spring Boot :: ${spring-boot.version}
