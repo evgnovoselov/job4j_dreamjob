@@ -31,9 +31,17 @@ public class PostStore {
         return posts.values();
     }
 
+    public Post findById(Integer id) {
+        return posts.get(id);
+    }
+
     public void add(Post post) {
         int currentId = id.incrementAndGet();
         post.setId(currentId);
         posts.put(currentId, post);
+    }
+
+    public void update(Post post) {
+        posts.replace(post.getId(), post);
     }
 }
