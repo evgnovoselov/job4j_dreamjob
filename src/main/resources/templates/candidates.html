@@ -18,6 +18,8 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title>Работа мечты!</title>
 </head>
 <body>
@@ -52,7 +54,10 @@
             <tbody>
             <tr th:each="candidate : ${candidates}">
                 <td th:text="${candidate.id}">1</td>
-                <td th:text="${candidate.name}">Имя</td>
+                <td>
+                    <a th:href="@{|/formUpdateCandidate/${candidate.id}|}"><i class="fa fa-edit"></i></a>
+                    <span th:text="${candidate.name}">Имя</span>
+                </td>
                 <td th:text="${candidate.description}">Описание</td>
                 <td th:text="${#temporals.format(candidate.created, 'dd.MM.yyyy HH:mm')}">09.11.2022 18:01</td>
             </tr>

@@ -34,25 +34,26 @@
                 <a class="nav-item nav-link" th:href="@{/posts}">Вакансии</a>
                 <a class="nav-item nav-link" th:href="@{/formAddPost}">Добавить вакансию</a>
                 <a class="nav-item nav-link" th:href="@{/candidates}">Кандидаты</a>
-                <a class="nav-item nav-link active" th:href="@{/formAddCandidate}">Добавить кандидата <span
-                        class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" th:href="@{/formAddCandidate}">Добавить кандидата</a>
             </div>
         </div>
     </nav>
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новый кандидат.
+                Редактирование кандидата.
             </div>
             <div class="card-body">
-                <form th:action="@{/addCandidate}" method="post">
+                <form th:action="@{/updateCandidate}" method="post" th:object="${candidate}">
+                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" th:field="*{created}">
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" th:field="*{name}">
                     </div>
                     <div class="form-group">
                         <label for="description">Описание</label>
-                        <textarea class="form-control" id="description" name="description"></textarea>
+                        <textarea class="form-control" id="description" th:field="*{description}"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
