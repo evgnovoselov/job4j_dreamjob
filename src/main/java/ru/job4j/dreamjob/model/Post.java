@@ -7,6 +7,7 @@ public class Post {
     private int id;
     private String name;
     private String description;
+    private City city;
     private boolean visible;
     private LocalDateTime created;
 
@@ -42,6 +43,14 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public boolean isVisible() {
