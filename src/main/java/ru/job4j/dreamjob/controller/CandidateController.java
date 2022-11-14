@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.service.CandidateService;
 import ru.job4j.dreamjob.service.CityService;
 
@@ -33,7 +34,7 @@ public class CandidateController {
     @GetMapping("/formAddCandidate")
     public String formAddCandidate(Model model) {
         model.addAttribute("candidate", new Candidate(0, "Введите имя",
-                "Введите описание", LocalDateTime.now()));
+                "Введите описание", new City(5, "Ереван"), LocalDateTime.now()));
         model.addAttribute("cities", cityService.getAllCities());
         return "addCandidate";
     }

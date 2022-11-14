@@ -48,6 +48,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Описание</th>
+                <th scope="col">Город</th>
                 <th scope="col">Дата</th>
             </tr>
             </thead>
@@ -65,6 +66,7 @@
                     </span>
                 </td>
                 <td th:text="${post.description}">Description</td>
+                <td th:text="${post.city.name}">Город</td>
                 <td th:text="${#temporals.format(post.created, 'dd.MM.yyyy HH:mm')}">09.11.2022 18:01</td>
             </tr>
             </tbody>

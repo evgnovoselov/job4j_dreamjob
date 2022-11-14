@@ -14,10 +14,11 @@ public class Post {
     public Post() {
     }
 
-    public Post(int id, String name, String description, LocalDateTime created) {
+    public Post(int id, String name, String description, City city, LocalDateTime created) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.city = city;
         this.created = created;
     }
 
