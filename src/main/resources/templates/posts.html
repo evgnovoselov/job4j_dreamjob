@@ -57,6 +57,12 @@
                 <td>
                     <a th:href="@{|/formUpdatePost/${post.id}|}"><i class="fa fa-edit"></i></a>
                     <span th:text="${post.name}">Junior</span>
+                    <span th:if="${post.visible}">
+                        <i class="fa fa-check-square-o"></i>
+                    </span>
+                    <span th:if="${!post.visible}">
+                        <i class="fa fa-square-o"></i>
+                    </span>
                 </td>
                 <td th:text="${post.description}">Description</td>
                 <td th:text="${#temporals.format(post.created, 'dd.MM.yyyy HH:mm')}">09.11.2022 18:01</td>
