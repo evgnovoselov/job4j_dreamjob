@@ -57,8 +57,9 @@
                     </div>
                     <div class="form-group">
                         <label for="city.id">Город</label>
-                        <select class="form-control" id="city.id" th:field="*{city}">
-                            <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+                        <select class="form-control" id="city.id" name="city.id">
+                            <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"
+                                    th:selected="${post.city.id == city.id}"></option>
                         </select>
                     </div>
                     <div class="form-check">
