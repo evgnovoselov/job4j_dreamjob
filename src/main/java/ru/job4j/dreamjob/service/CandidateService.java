@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.store.CandidateStore;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Service
@@ -25,6 +26,7 @@ public class CandidateService {
     }
 
     public void add(Candidate candidate) {
+        candidate.setCreated(LocalDateTime.now());
         candidateStore.add(candidate);
     }
 

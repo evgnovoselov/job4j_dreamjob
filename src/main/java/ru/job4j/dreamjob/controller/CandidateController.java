@@ -33,15 +33,13 @@ public class CandidateController {
 
     @GetMapping("/formAddCandidate")
     public String formAddCandidate(Model model) {
-        model.addAttribute("candidate", new Candidate(0, "Введите имя",
-                "Введите описание", new City(5, "Ереван"), LocalDateTime.now()));
         model.addAttribute("cities", cityService.getAllCities());
         return "addCandidate";
     }
 
     @PostMapping("/addCandidate")
     public String createCandidate(@ModelAttribute Candidate candidate) {
-        candidate.setCreated(LocalDateTime.now());
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.add(candidate);
         return "redirect:/candidates";
     }
@@ -55,6 +53,7 @@ public class CandidateController {
 
     @PostMapping("/updateCandidate")
     public String updateCandidate(@ModelAttribute Candidate candidate) {
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.update(candidate);
         return "redirect:/candidates";
     }
