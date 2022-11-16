@@ -8,6 +8,7 @@ import java.util.Objects;
  */
 public class Candidate {
     private int id;
+    private byte[] photo;
     private String name;
     private String description;
     private City city;
@@ -30,6 +31,14 @@ public class Candidate {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     public String getName() {
