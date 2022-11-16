@@ -45,7 +45,11 @@
                 Новый кандидат.
             </div>
             <div class="card-body">
-                <form th:action="@{/addCandidate}" method="post">
+                <form th:action="@{/addCandidate}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file">Фотография</label>
+                        <input type="file" class="form-control" name="file" id="file">
+                    </div>
                     <div class="form-group">
                         <label for="name">Имя</label>
                         <input type="text" class="form-control" id="name" name="name">
