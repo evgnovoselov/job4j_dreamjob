@@ -6,10 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -32,6 +29,7 @@ public class PostDBStore {
                             it.getString("name"),
                             it.getString("description"),
                             new City(it.getInt("city_id"), null),
+                            it.getBoolean("visible")
                             it.getTimestamp("created").toLocalDateTime()));
                 }
             }
@@ -56,6 +54,7 @@ public class PostDBStore {
                             it.getString("name"),
                             it.getString("description"),
                             new City(it.getInt("city_id"), null),
+                            it.getBoolean("visible"),
                             it.getTimestamp("created").toLocalDateTime());
                 }
             }
@@ -66,6 +65,24 @@ public class PostDBStore {
     }
 
     public void add(Post post) {
-        // TODO Написать метод
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "INSERT INTO post(name, description, city_id, visible, created) VALUES (?,?,?,?,?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS
+             )) {
+            ps.setString(1, post.getName());
+            ps.setString(2, post.getDescription());
+            ps.setInt(3, post.getCity().getId());
+            ps.setBoolean(4, post.isVisible());
+            ps.setTimestamp(5, Timestamp.valueOf(post.getCreated()));
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    post.setId(id.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

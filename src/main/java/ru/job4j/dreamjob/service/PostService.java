@@ -12,13 +12,17 @@ import java.util.Collection;
 @ThreadSafe
 public class PostService {
     private final PostDBStore store;
+    private final CityService cityService;
 
-    public PostService(PostDBStore store) {
+    public PostService(PostDBStore store, CityService cityService) {
         this.store = store;
+        this.cityService = cityService;
     }
 
     public Collection<Post> findAll() {
-        return store.findAll();
+        Collection<Post> posts = store.findAll();
+        posts.forEach(post -> post.setCity(cityService.findById(post.getCity().getId())));
+        return posts;
     }
 
     public Post findById(int id) {
