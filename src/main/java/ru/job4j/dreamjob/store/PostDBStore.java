@@ -40,7 +40,20 @@ public class PostDBStore {
     }
 
     public void update(Post post) {
-        // TODO Написать метод
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE post SET name = ?, description = ?, city_id = ?, visible = ?, created = ? WHERE id = ?"
+             )) {
+            ps.setString(1, post.getName());
+            ps.setString(2, post.getDescription());
+            ps.setInt(3, post.getCity().getId());
+            ps.setBoolean(4, post.isVisible());
+            ps.setTimestamp(5, Timestamp.valueOf(post.getCreated()));
+            ps.setInt(6, post.getId());
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Post findById(int id) {
