@@ -13,7 +13,7 @@ import java.util.Properties;
 public class Main {
     private Properties loadDbProperties() {
         Properties cfg = new Properties();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Main.class
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Main.class.getClassLoader()
                 .getResourceAsStream("db.properties")))) {
             cfg.load(reader);
             Class.forName(cfg.getProperty("jdbc.driver"));
