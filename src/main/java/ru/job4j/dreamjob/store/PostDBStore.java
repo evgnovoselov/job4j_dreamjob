@@ -37,7 +37,7 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error PostDBStore.findAll, Exception = {}", e);
+            LOGGER.error("Error PostDBStore.findAll");
         }
         return posts;
     }
@@ -54,8 +54,8 @@ public class PostDBStore {
             ps.setTimestamp(5, Timestamp.valueOf(post.getCreated()));
             ps.setInt(6, post.getId());
             ps.execute();
-        } catch (SQLException e) {
-            LOGGER.error("Error PostDBStore.update id = {}, Exception = {}", post.getId(), e);
+        } catch (Exception e) {
+            LOGGER.error("Error PostDBStore.update id = {}", post.getId());
         }
     }
 
@@ -75,7 +75,7 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error PostDBStore.findById id = {}, Exception = {}", id, e);
+            LOGGER.error("Error PostDBStore.findById id = {}", id);
         }
         return post;
     }
@@ -98,7 +98,7 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error PostDBStore.add id = {}, Exception = {}", post.getId(), e);
+            LOGGER.error("Error PostDBStore.add id = {}", post.getId());
         }
     }
 }
