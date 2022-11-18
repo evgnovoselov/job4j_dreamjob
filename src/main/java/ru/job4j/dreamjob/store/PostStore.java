@@ -19,11 +19,11 @@ public class PostStore {
 
     private PostStore() {
         posts.put(1, new Post(1, "Junior Java Job", "We need Junior Java Developer", new City(1, "Москва"),
-                LocalDateTime.of(2022, 11, 9, 16, 5)));
+                true, LocalDateTime.of(2022, 11, 9, 16, 5)));
         posts.put(2, new Post(2, "Middle Java Job", "We need Middle Java Developer", new City(3, "Екб"),
-                LocalDateTime.of(2022, 11, 9, 17, 10)));
+                true, LocalDateTime.of(2022, 11, 9, 17, 10)));
         posts.put(3, new Post(3, "Senior Java Job", "We need Senior Java Developer", new City(2, "СПб"),
-                LocalDateTime.of(2022, 11, 9, 18, 15)));
+                true, LocalDateTime.of(2022, 11, 9, 18, 15)));
         id.set(3);
     }
 
