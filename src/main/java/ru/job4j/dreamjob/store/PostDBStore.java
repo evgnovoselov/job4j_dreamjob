@@ -2,6 +2,8 @@ package ru.job4j.dreamjob.store;
 
 import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
@@ -13,6 +15,7 @@ import java.util.Collection;
 @Repository
 @ThreadSafe
 public class PostDBStore {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PostDBStore.class.getSimpleName());
     private final BasicDataSource pool;
 
     public PostDBStore(BasicDataSource pool) {
@@ -33,8 +36,8 @@ public class PostDBStore {
                             it.getTimestamp("created").toLocalDateTime()));
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            LOGGER.error("Error PostDBStore.findAll, Exception = {}", e);
         }
         return posts;
     }
@@ -52,7 +55,7 @@ public class PostDBStore {
             ps.setInt(6, post.getId());
             ps.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("Error PostDBStore.update id = {}, Exception = {}", post.getId(), e);
         }
     }
 
@@ -71,8 +74,8 @@ public class PostDBStore {
                             it.getTimestamp("created").toLocalDateTime());
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            LOGGER.error("Error PostDBStore.findById id = {}, Exception = {}", id, e);
         }
         return post;
     }
@@ -94,8 +97,8 @@ public class PostDBStore {
                     post.setId(id.getInt(1));
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            LOGGER.error("Error PostDBStore.add id = {}, Exception = {}", post.getId(), e);
         }
     }
 }
