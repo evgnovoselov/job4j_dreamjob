@@ -29,7 +29,7 @@ public class PostDBStore {
                             it.getString("name"),
                             it.getString("description"),
                             new City(it.getInt("city_id"), null),
-                            it.getBoolean("visible")
+                            it.getBoolean("visible"),
                             it.getTimestamp("created").toLocalDateTime()));
                 }
             }
