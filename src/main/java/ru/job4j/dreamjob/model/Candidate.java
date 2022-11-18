@@ -17,8 +17,9 @@ public class Candidate {
     public Candidate() {
     }
 
-    public Candidate(int id, String name, String description, City city, LocalDateTime created) {
+    public Candidate(int id, byte[] photo, String name, String description, City city, LocalDateTime created) {
         this.id = id;
+        this.photo = photo;
         this.name = name;
         this.description = description;
         this.city = city;
