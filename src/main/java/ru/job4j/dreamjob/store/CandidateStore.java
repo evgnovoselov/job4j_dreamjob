@@ -18,11 +18,11 @@ public class CandidateStore {
     private final AtomicInteger id = new AtomicInteger();
 
     private CandidateStore() {
-        candidates.put(1, new Candidate(1, "Ivan", "Senior Java Developer", new City(1, "Москва"),
+        candidates.put(1, new Candidate(1, new byte[]{}, "Ivan", "Senior Java Developer", new City(1, "Москва"),
                 LocalDateTime.of(2022, 11, 7, 20, 14)));
-        candidates.put(2, new Candidate(2, "Kristina", "Middle Java Developer", new City(3, "ЕКб"),
+        candidates.put(2, new Candidate(2, new byte[]{}, "Kristina", "Middle Java Developer", new City(3, "ЕКб"),
                 LocalDateTime.of(2022, 11, 8, 21, 14)));
-        candidates.put(3, new Candidate(3, "Anna", "Junior Java Developer", new City(2, "СПб"),
+        candidates.put(3, new Candidate(3, new byte[]{}, "Anna", "Junior Java Developer", new City(2, "СПб"),
                 LocalDateTime.of(2022, 11, 9, 22, 14)));
         id.set(3);
     }
@@ -42,6 +42,10 @@ public class CandidateStore {
     }
 
     public void update(Candidate candidate) {
+        Candidate oldCandidate = findById(candidate.getId());
+        if (candidate.getPhoto().length == 0 && oldCandidate.getPhoto().length > 0) {
+            candidate.setPhoto(oldCandidate.getPhoto());
+        }
         candidates.replace(candidate.getId(), candidate);
     }
 }
