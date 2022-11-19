@@ -16,6 +16,10 @@ import java.util.Collection;
 @ThreadSafe
 public class CandidateDBStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(CandidateDBStore.class.getSimpleName());
+    private static final String SQL_SELECT_ALL_CANDIDATE = "SELECT * FROM candidate";
+    private static final String SQL_FIND_BY_ID_CANDIDATE = "SELECT * FROM candidate WHERE id = ?";
+    private static final String SQL_ADD_CANDIDATE = "INSERT INTO candidate(photo, name, description, city_id, created) VALUES (?,?,?,?,?)";
+    private static final String SQL_UPDATE_CANDIDATE = "UPDATE candidate SET photo = ?, name = ?, description = ?, city_id = ?, created = ? WHERE id = ?";
     private final BasicDataSource pool;
 
     public CandidateDBStore(BasicDataSource pool) {
@@ -25,15 +29,10 @@ public class CandidateDBStore {
     public Collection<Candidate> findAll() {
         Collection<Candidate> candidates = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate")) {
+             PreparedStatement ps = cn.prepareStatement(SQL_SELECT_ALL_CANDIDATE)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"),
-                            it.getBytes("photo"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            new City(it.getInt("city_id"), null),
-                            it.getTimestamp("created").toLocalDateTime()));
+                    candidates.add(createCandidate(it));
                 }
             }
         } catch (Exception e) {
@@ -45,16 +44,11 @@ public class CandidateDBStore {
     public Candidate findById(int id) {
         Candidate candidate = null;
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate WHERE id = ?")) {
+             PreparedStatement ps = cn.prepareStatement(SQL_FIND_BY_ID_CANDIDATE)) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    candidate = new Candidate(it.getInt("id"),
-                            it.getBytes("photo"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            new City(it.getInt("city_id"), null),
-                            it.getTimestamp("created").toLocalDateTime());
+                    candidate = createCandidate(it);
                 }
             }
         } catch (Exception e) {
@@ -66,7 +60,7 @@ public class CandidateDBStore {
     public void add(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "INSERT INTO candidate(photo, name, description, city_id, created) VALUES (?,?,?,?,?)",
+                     SQL_ADD_CANDIDATE,
                      PreparedStatement.RETURN_GENERATED_KEYS
              )) {
             ps.setBytes(1, candidate.getPhoto());
@@ -88,7 +82,7 @@ public class CandidateDBStore {
     public void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "UPDATE candidate SET photo = ?, name = ?, description = ?, city_id = ?, created = ? WHERE id = ?"
+                     SQL_UPDATE_CANDIDATE
              )) {
             ps.setBytes(1, candidate.getPhoto());
             ps.setString(2, candidate.getName());
@@ -100,5 +94,14 @@ public class CandidateDBStore {
         } catch (Exception e) {
             LOGGER.error("Error CandidateDBStore.update id = {}", candidate.getId());
         }
+    }
+
+    private static Candidate createCandidate(ResultSet it) throws SQLException {
+        return new Candidate(it.getInt("id"),
+                it.getBytes("photo"),
+                it.getString("name"),
+                it.getString("description"),
+                new City(it.getInt("city_id"), null),
+                it.getTimestamp("created").toLocalDateTime());
     }
 }
