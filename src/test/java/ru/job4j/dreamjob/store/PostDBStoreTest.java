@@ -23,7 +23,7 @@ class PostDBStoreTest {
     }
 
     @Test
-    void whenCreatePost() {
+    void whenCreatePostThenHavePost() {
         PostDBStore store = new PostDBStore(new Main().loadPool());
         Post post = new Post(0, "Java job", "Description", new City(1, "Moscow"),
                 true, LocalDateTime.now());
