@@ -20,6 +20,7 @@ public class PostDBStore {
     private static final String SQL_FIND_BY_ID_POST = "SELECT * FROM post WHERE id = ?";
     private static final String SQL_ADD_POST = "INSERT INTO post(name, description, city_id, visible, created) VALUES (?,?,?,?,?)";
     private static final String SQL_UPDATE_POST = "UPDATE post SET name = ?, description = ?, city_id = ?, visible = ?, created = ? WHERE id = ?";
+    private static final String SQL_DELETE_POST = "DELETE FROM post WHERE id = ?";
     private final BasicDataSource pool;
 
     public PostDBStore(BasicDataSource pool) {
@@ -93,6 +94,16 @@ public class PostDBStore {
             }
         } catch (Exception e) {
             LOGGER.error("Error PostDBStore.add id = {}", post.getId());
+        }
+    }
+
+    public void delete(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(SQL_DELETE_POST)) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (Exception e) {
+            LOGGER.error("Error PostDBStore.delete Post id = {}", id);
         }
     }
 

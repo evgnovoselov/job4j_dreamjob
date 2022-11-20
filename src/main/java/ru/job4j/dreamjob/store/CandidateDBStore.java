@@ -20,6 +20,7 @@ public class CandidateDBStore {
     private static final String SQL_FIND_BY_ID_CANDIDATE = "SELECT * FROM candidate WHERE id = ?";
     private static final String SQL_ADD_CANDIDATE = "INSERT INTO candidate(photo, name, description, city_id, created) VALUES (?,?,?,?,?)";
     private static final String SQL_UPDATE_CANDIDATE = "UPDATE candidate SET photo = ?, name = ?, description = ?, city_id = ?, created = ? WHERE id = ?";
+    private static final String SQL_DELETE_CANDIDATE = "DELETE FROM candidate WHERE id = ?";
     private final BasicDataSource pool;
 
     public CandidateDBStore(BasicDataSource pool) {
@@ -93,6 +94,16 @@ public class CandidateDBStore {
             ps.execute();
         } catch (Exception e) {
             LOGGER.error("Error CandidateDBStore.update id = {}", candidate.getId());
+        }
+    }
+
+    public void delete(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(SQL_DELETE_CANDIDATE)) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (Exception e) {
+            LOGGER.error("Error CandidateDBStore.delete Candidate id = {}", id);
         }
     }
 
