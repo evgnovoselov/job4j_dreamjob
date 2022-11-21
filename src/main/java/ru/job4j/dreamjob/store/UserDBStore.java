@@ -10,19 +10,20 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Optional;
 
 @Repository
 @ThreadSafe
 public class UserDBStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDBStore.class.getSimpleName());
-    private static final String SQL_ADD_USER = "INSERT INTO \"user\"(email, password) VALUES (?,?)";
+    private static final String SQL_ADD_USER = "INSERT INTO users(email, password) VALUES (?,?)";
     private final BasicDataSource pool;
 
     public UserDBStore(BasicDataSource pool) {
         this.pool = pool;
     }
 
-    public User add(User user) {
+    public Optional<User> add(User user) {
         User result = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
@@ -41,6 +42,6 @@ public class UserDBStore {
         } catch (Exception e) {
             LOGGER.error("Error UserDBStore.add User email = {}", user.getEmail());
         }
-        return result;
+        return Optional.ofNullable(result);
     }
 }
