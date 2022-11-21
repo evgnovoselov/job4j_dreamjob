@@ -18,6 +18,7 @@ import java.util.Optional;
 public class UserDBStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDBStore.class.getSimpleName());
     private static final String SQL_ADD_USER = "INSERT INTO users(email, password) VALUES (?,?)";
+    private static final String SQL_FIND_USER_BY_EMAIL_AND_PASSWORD = "";
     private final BasicDataSource pool;
 
     public UserDBStore(BasicDataSource pool) {
@@ -46,7 +47,7 @@ public class UserDBStore {
         return Optional.ofNullable(result);
     }
 
-    public User findUserByEmailAndPassword(String email, String password) {
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
         User user = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(SQL_FIND_USER_BY_EMAIL_AND_PASSWORD)) {
@@ -54,6 +55,6 @@ public class UserDBStore {
         } catch (SQLException e) {
             LOGGER.error("Error UserDBStore.findUserByEmailAndPassword with email = {} and password = {}", email, password);
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 }
