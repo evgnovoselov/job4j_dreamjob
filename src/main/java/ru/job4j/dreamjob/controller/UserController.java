@@ -24,8 +24,11 @@ public class UserController {
     }
 
     @GetMapping("/loginPage")
-    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
+    public String loginPage(Model model,
+                            @RequestParam(name = "fail", required = false) Boolean fail,
+                            HttpSession session) {
         model.addAttribute("fail", fail != null);
+        addUserInModel(model, session);
         return "login";
     }
 
@@ -47,7 +50,8 @@ public class UserController {
     }
 
     @GetMapping("/registration")
-    public String formRegister(Model model) {
+    public String formRegister(Model model, HttpSession session) {
+        addUserInModel(model, session);
         return "registerUser";
     }
 
@@ -62,7 +66,17 @@ public class UserController {
     }
 
     @GetMapping("/success")
-    public String registerSuccess() {
+    public String registerSuccess(Model model, HttpSession session) {
+        addUserInModel(model, session);
         return "registerUserSuccess";
+    }
+
+    private static void addUserInModel(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
     }
 }
