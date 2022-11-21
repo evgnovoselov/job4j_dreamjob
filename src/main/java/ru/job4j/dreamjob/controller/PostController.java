@@ -39,7 +39,7 @@ public class PostController {
     }
 
     @GetMapping("/formAddPost")
-    public String formAddPost(Model model,HttpSession session) {
+    public String formAddPost(Model model, HttpSession session) {
         model.addAttribute("cities", cityService.getAllCities());
         addUserInModel(model, session);
         return "addPost";
