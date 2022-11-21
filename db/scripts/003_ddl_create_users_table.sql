@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS "user"
+CREATE TABLE IF NOT EXISTS users
 (
     id SERIAL PRIMARY KEY NOT NULL,
-    email CHARACTER VARYING(20) NOT NULL,
-    password CHARACTER VARYING(20) NOT NULL
+    email TEXT NOT NULL,
+    password TEXT NOT NULL
 );
-ALTER TABLE "user" ADD CONSTRAINT user_email_unique UNIQUE ("email");
+ALTER TABLE users ADD CONSTRAINT email_unique UNIQUE (email);
