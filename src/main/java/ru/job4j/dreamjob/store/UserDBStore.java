@@ -17,7 +17,7 @@ import java.util.Optional;
 @ThreadSafe
 public class UserDBStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDBStore.class.getSimpleName());
-    private static final String SQL_ADD_USER = "INSERT INTO users(email, password) VALUES (?,?)";
+    private static final String SQL_ADD_USER = "INSERT INTO users(name, email, password) VALUES (?,?,?)";
     private static final String SQL_FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
     private final BasicDataSource pool;
 
@@ -32,8 +32,9 @@ public class UserDBStore {
                      SQL_ADD_USER,
                      PreparedStatement.RETURN_GENERATED_KEYS
              )) {
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -67,6 +68,7 @@ public class UserDBStore {
     private static User createUser(ResultSet it) throws SQLException {
         return new User(
                 it.getInt("id"),
+                it.getString("name"),
                 it.getString("email"),
                 it.getString("password")
         );
