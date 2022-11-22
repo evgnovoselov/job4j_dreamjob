@@ -49,20 +49,20 @@ public class UserDBStore {
     }
 
     public Optional<User> findUserByEmailAndPassword(String email, String password) {
-        User user = null;
+        Optional<User> user = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(SQL_FIND_USER_BY_EMAIL_AND_PASSWORD)) {
             ps.setString(1, email);
             ps.setString(2, password);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    user = createUser(it);
+                    user = Optional.of(createUser(it));
                 }
             }
         } catch (Exception e) {
             LOGGER.error("Error UserDBStore.findUserByEmailAndPassword with email = {} and password = {}", email, password);
         }
-        return Optional.ofNullable(user);
+        return user;
     }
 
     private static User createUser(ResultSet it) throws SQLException {
