@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.service.UserService;
+import ru.job4j.dreamjob.utility.Utility;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,7 +29,7 @@ public class UserController {
                             @RequestParam(name = "fail", required = false) Boolean fail,
                             HttpSession session) {
         model.addAttribute("fail", fail != null);
-        addUserInModel(model, session);
+        Utility.addUserInModel(model, session);
         return "login";
     }
 
@@ -51,7 +52,7 @@ public class UserController {
 
     @GetMapping("/registration")
     public String formRegister(Model model, HttpSession session) {
-        addUserInModel(model, session);
+        Utility.addUserInModel(model, session);
         return "registerUser";
     }
 
@@ -67,16 +68,7 @@ public class UserController {
 
     @GetMapping("/success")
     public String registerSuccess(Model model, HttpSession session) {
-        addUserInModel(model, session);
+        Utility.addUserInModel(model, session);
         return "registerUserSuccess";
-    }
-
-    private static void addUserInModel(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
     }
 }
