@@ -14,9 +14,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-class PostControllerTest {
+public class PostControllerTest {
     @Test
-    void whenPosts() {
+    public void whenPosts() {
         List<Post> posts = List.of(
                 new Post(1, "New post", "Description", new City(1, "Moscow"),
                         true, LocalDateTime.now()),
@@ -32,5 +32,17 @@ class PostControllerTest {
         String page = postController.posts(model, session);
         verify(model).addAttribute("posts", posts);
         assertThat(page).isEqualTo("posts");
+    }
+
+    @Test
+    public void whenCreatePost() {
+        Post input = new Post(1, "New post", "Description", new City(1, "Moscow"),
+                true, LocalDateTime.now());
+        PostService postService = mock(PostService.class);
+        CityService cityService = mock(CityService.class);
+        PostController postController = new PostController(postService, cityService);
+        String page = postController.createPost(input);
+        verify(postService).add(input);
+        assertThat(page).isEqualTo("redirect:/posts");
     }
 }
