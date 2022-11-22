@@ -26,7 +26,7 @@ public class UserDBStore {
     }
 
     public Optional<User> add(User user) {
-        User result = null;
+        Optional<User> result = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
                      SQL_ADD_USER,
@@ -41,11 +41,11 @@ public class UserDBStore {
                     user.setId(id.getInt(1));
                 }
             }
-            result = user;
+            result = Optional.of(user);
         } catch (Exception e) {
             LOGGER.error("Error UserDBStore.add User email = {}", user.getEmail());
         }
-        return Optional.ofNullable(result);
+        return result;
     }
 
     public Optional<User> findUserByEmailAndPassword(String email, String password) {
