@@ -36,7 +36,17 @@
                         class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" th:href="@{/candidates}">Кандидаты</a>
                 <a class="nav-item nav-link" th:href="@{/formAddCandidate}">Добавить кандидата</a>
-                <a class="nav-item nav-link" th:href="@{/registration}">Зарегистрировать пользователя</a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/registration}">
+                    Зарегистрировать пользователя
+                </a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+                    <span th:text="${user.name}">Гость</span>
+                    <span> | Войти</span>
+                </a>
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                    <span th:text="${user.name}">Гость</span>
+                    <span> | Выйти</span>
+                </a>
             </div>
         </div>
     </nav>
