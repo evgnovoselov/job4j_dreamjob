@@ -61,13 +61,34 @@ public class PostControllerTest {
 
     @Test
     public void whenFormAddPostThenAddPost() {
-        // TODO add code
+        User user = new User(1, "User", "example@example.com", "password");
+        List<City> cities = List.of(new City(1, "Москва"), new City(2, "СПб"));
         PostService postService = mock(PostService.class);
         CityService cityService = mock(CityService.class);
+        when(cityService.getAllCities()).thenReturn(cities);
         Model model = mock(Model.class);
         HttpSession session = mock(HttpSession.class);
+        when(session.getAttribute("user")).thenReturn(user);
         PostController postController = new PostController(postService, cityService);
         String page = postController.formAddPost(model, session);
+        verify(model).addAttribute("cities", cities);
+        verify(model).addAttribute("user", user);
+        assertThat(page).isEqualTo("addPost");
+    }
+
+    @Test
+    public void whenFormAddPostThenAddPostWithoutUser() {
+        List<City> cities = List.of(new City(1, "Москва"), new City(2, "СПб"));
+        PostService postService = mock(PostService.class);
+        CityService cityService = mock(CityService.class);
+        when(cityService.getAllCities()).thenReturn(cities);
+        Model model = mock(Model.class);
+        HttpSession session = mock(HttpSession.class);
+        when(session.getAttribute("user")).thenReturn(null);
+        PostController postController = new PostController(postService, cityService);
+        String page = postController.formAddPost(model, session);
+        verify(model).addAttribute("cities", cities);
+        verify(model).addAttribute("user", new User());
         assertThat(page).isEqualTo("addPost");
     }
 
@@ -81,5 +102,26 @@ public class PostControllerTest {
         String page = postController.createPost(input);
         verify(postService).add(input);
         assertThat(page).isEqualTo("redirect:/posts");
+    }
+
+    @Test
+    public void whenFormUpdatePost() {
+        User user = new User(1, "User", "example@example.com", "password");
+        Post post = new Post(1, "New Post", "Description", new City(1, "Москва"),
+                true, LocalDateTime.now());
+        List<City> cities = List.of(new City(1, "Москва"), new City(2, "СПб"));
+        Model model = mock(Model.class);
+        HttpSession session = mock(HttpSession.class);
+        when(session.getAttribute("user")).thenReturn(user);
+        PostService postService = mock(PostService.class);
+        when(postService.findById(anyInt())).thenReturn(post);
+        CityService cityService = mock(CityService.class);
+        when(cityService.getAllCities()).thenReturn(cities);
+        PostController postController = new PostController(postService, cityService);
+        String page = postController.formUpdatePost(model, 1, session);
+        verify(model).addAttribute("post", post);
+        verify(model).addAttribute("cities", cities);
+        verify(model).addAttribute("user", user);
+        assertThat(page).isEqualTo("updatePost");
     }
 }
