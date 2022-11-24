@@ -33,13 +33,6 @@ public class AuthFilter implements Filter {
     }
 
     private static boolean hasAccessGuestTo(String uri) {
-        boolean isAccess = false;
-        for (String url : URLS_GUEST) {
-            if (uri.endsWith(url)) {
-                isAccess = true;
-                break;
-            }
-        }
-        return isAccess;
+        return URLS_GUEST.stream().anyMatch(uri::endsWith);
     }
 }
