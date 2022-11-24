@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 
 public class PostControllerTest {
     @Test
-    public void whenPosts() {
+    public void whenPostsThenPosts() {
         List<Post> posts = List.of(
                 new Post(1, "New post", "Description", new City(1, "Moscow"),
                         true, LocalDateTime.now()),
@@ -34,6 +34,7 @@ public class PostControllerTest {
         verify(model).addAttribute("posts", posts);
         assertThat(page).isEqualTo("posts");
     }
+
     @Test
     public void whenFormAddPostThenAddPost() {
         List<City> cities = List.of(new City(1, "Москва"), new City(2, "СПб"));
@@ -49,7 +50,7 @@ public class PostControllerTest {
     }
 
     @Test
-    public void whenCreatePost() {
+    public void whenCreatePostThenRedirectPosts() {
         City city = new City(1, "Москва");
         Post post = mock(Post.class);
         when(post.getCity()).thenReturn(city);
@@ -64,7 +65,7 @@ public class PostControllerTest {
     }
 
     @Test
-    public void whenFormUpdatePost() {
+    public void whenFormUpdatePostThenUpdatePost() {
         Post post = new Post(1, "New Post", "Description", new City(1, "Москва"),
                 true, LocalDateTime.now());
         List<City> cities = List.of(new City(1, "Москва"), new City(2, "СПб"));
@@ -82,7 +83,7 @@ public class PostControllerTest {
     }
 
     @Test
-    public void whenUpdatePost() {
+    public void whenUpdatePostThenRedirectPosts() {
         City city = new City(1, "Москва");
         Post post = mock(Post.class);
         when(post.getCity()).thenReturn(city);
