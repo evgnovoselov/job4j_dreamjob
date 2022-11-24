@@ -60,6 +60,18 @@ public class PostControllerTest {
     }
 
     @Test
+    public void whenFormAddPostThenAddPost() {
+        // TODO add code
+        PostService postService = mock(PostService.class);
+        CityService cityService = mock(CityService.class);
+        Model model = mock(Model.class);
+        HttpSession session = mock(HttpSession.class);
+        PostController postController = new PostController(postService, cityService);
+        String page = postController.formAddPost(model, session);
+        assertThat(page).isEqualTo("addPost");
+    }
+
+    @Test
     public void whenCreatePost() {
         Post input = new Post(1, "New post", "Description", new City(1, "Moscow"),
                 true, LocalDateTime.now());
